@@ -24,7 +24,7 @@ function Home() {
   }, []);
 
   const handlePostThread = async () => {
-    await getThreads();
+    getThreads();
   };
 
   return (
@@ -35,7 +35,7 @@ function Home() {
       {isLoggedIn && <ThreadForm callback={handlePostThread} />}
       <div>
         {threads.map((thread, index) => (
-          <ThreadCard key={thread.id} thread={thread} isNot={`detail/${thread.id}`} index={index} />
+          <ThreadCard key={thread.id} thread={thread} isNot={`detail/${thread.id}`} index={index} callback={handlePostThread} />
         ))}
       </div>
     </>

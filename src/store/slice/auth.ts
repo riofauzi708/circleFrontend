@@ -1,36 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { IProfile } from '../../types/app'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IProfile } from '../../types/app';
 
-interface IAuthState {
-    user: IProfile | null | undefined
-    token: string
+export interface IAuthState {
+  user: IProfile | null | undefined;
+  token: string;
+  isAuthenticated: boolean;
+  isFollowing: boolean; // Add this line
 }
 
 const initialState: IAuthState = {
-    user: undefined,
-    token: '',
-}
+  user: undefined,
+  token: '',
+  isAuthenticated: false,
+  isFollowing: false,
+};
 
-export const counterSlice = createSlice({
-    name: 'counter',
-    // `createSlice` will infer the state type from the `initialState` argument
-    initialState,
-    reducers: {
-      Login: (state, action: PayloadAction<{ user: IProfile; token: string }>) => {
-        state.user = action.payload.user
-        state.token = action.payload.token
-        
-        
-      },
-      Logout: (state) => {
-        localStorage.removeItem('token')
-        state.user = undefined
-        state.token = ''
-      },
+export const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    Login: (state, action: PayloadAction<{ user: IProfile; token: string }>) => {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
     },
-  })
+    Logout: (state) => {
+      localStorage.removeItem('token');
+      state.user = undefined;
+      state.token = '';
+    },
+    setFollowStatus: (state, action: PayloadAction<boolean>) => {
+      state.isFollowing = action.payload;
+    },
+  },
+});
 
-  export const {Login, Logout} = counterSlice.actions;
-
-  export default counterSlice.reducer
+export const { Login, Logout, setFollowStatus } = authSlice.actions;
+export default authSlice.reducer;

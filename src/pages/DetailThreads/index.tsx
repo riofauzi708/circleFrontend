@@ -2,11 +2,9 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { getRepliesAPI, getThreadByIdAPI } from "../../libs/Api/Call/thread"
 import { IThread } from "../../types/app"
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/react"
+import { Box, Image, Text } from "@chakra-ui/react"
 import ThreadCard from "../../components/ThreadCard"
 import ThreadForm from "../Home/Components/ThreadForm"
-import { BsHeartFill } from "react-icons/bs"
-import { BiComment } from "react-icons/bi"
 
 
 function DetailThread() {
@@ -48,41 +46,6 @@ function DetailThread() {
           <Image src={"http://localhost:5000/uploads/" + image.image} 
           width="300px" alt="image" />
         ))}
-        <Flex gap={10}>
-            <Button 
-            style={{ textDecoration: "none" 
-            , color: "white"
-            , display: "flex"
-            , alignItems: "center"
-            , gap: "6px"
-            , cursor: "pointer"
-            , marginTop: "-10px"
-            , border: "none"
-            , backgroundColor: "transparent"
-            , padding: "10px"
-            }}
-            >
-                <Box>
-                    <BsHeartFill />
-                </Box>
-                <Text>1.1k Like</Text>
-            </Button>
-            <Button
-            style={{ textDecoration: "none" 
-            , color: "white"
-            , display: "flex"
-            , alignItems: "center"
-            , gap: "6px"
-            , cursor: "pointer"
-            , marginTop: "-10px"
-            , border: "none"
-            , backgroundColor: "transparent"
-            , padding: "10px"
-            }}  
-            >
-              <BiComment />96 Replies
-              </Button>
-        </Flex>
         </Box>
 
         <Box>

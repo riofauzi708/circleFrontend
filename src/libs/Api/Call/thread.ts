@@ -46,3 +46,11 @@ export const createThreadAPI = async (body: {
        },
     });
  };
+
+ export const deleteThreadAPI = async (id: number) => {
+    return await API.delete(`thread/${id}`, {
+       headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+       },
+    });
+ };

@@ -5,6 +5,7 @@ import Follows from './pages/Follows'
 import Profile from './pages/Profile'
 import Search from './pages/Search'
 import DetailThread from './pages/DetailThreads'
+import DetailImage from './components/DetailImage'
 
 const App = () => {
   return (
@@ -13,10 +14,11 @@ const App = () => {
         <Routes>
           <Route path="/" element= {<RootLayout/>}>
           <Route index element= {<Home/>} />
-          <Route path='/search' element= {<Search id={0} username={''} fullname={''} email={''}/>} />
+          <Route path='/search' element= {<Search/>} />
           <Route path='/follows' element= {<Follows/>} />
           <Route path='/profile' element= {<Profile/>} />
           <Route path='/detail/:threadId' element= {<DetailThread/>} />
+          <Route path='/detail-image/:threadId' element= {<DetailImage/>} />
           </Route>
         </Routes>
       </BrowserRouter>

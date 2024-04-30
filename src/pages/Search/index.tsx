@@ -1,62 +1,97 @@
-import React from 'react'; 
-import { MdOutlinePersonSearch } from 'react-icons/md'; 
- 
-interface IUser {
-  id: number;
-  username: string;
+import React, { useState, useEffect } from 'react';
+import { Box, Flex, Input, Text, Avatar, Divider } from '@chakra-ui/react';
+import { getUsersAPI } from '../../libs/Api/Call/user';
+import { useAppSelector } from '../../store';
+import { IProfile } from '../../types/app';
+import FollowButton from '../../components/FollowButton';
+
+interface User {
+  id: string;
   fullname: string;
-  email: string;
-  profile?: {
-      id: number;
-      avatar?: string | null;
-  };
+  username: string;
+  avatar: string;
+  isFollowing: boolean;
+  profile: IProfile;
 }
- 
-const Search: React.FC<IUser> = () => { 
-  const avatarDefault = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/640px-User-avatar.svg.png";
 
-    return ( 
-      <div className='border border-[#262626] h-[100vh] p-3'> 
-          <form> 
-              <div className='flex bg-[#262626] p-3 rounded-full mt-5'> 
-                  <MdOutlinePersonSearch size={"27px"} /> 
-                  <input 
-                      type="text" 
-                      placeholder='Search your friend' 
-                      className='outline-none flex-grow bg-transparent' 
-                  /> 
-              </div> 
-          </form> 
+const SearchPage = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [users, setUsers] = useState<User[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  useAppSelector((state) => state.auth);
 
-          <div> 
-                  <div className='w-full h-[60vh] flex justify-center items-center'> 
-                      <div className='text-center'> 
-                          <h1 className='text-[20px] font-bold'>No results for “asmorncd”</h1> 
-                          <p>Try searching for something else or check the </p> 
-                          <p>spelling of what you typed.</p> 
-                      </div> 
-                  </div> 
-                          <div className="w-280px flex justify-between gap-2 my-1 p-3"> 
-                              <div className="flex gap-2"> 
-                                  <img 
-                                      className="h-12 w-12 rounded-full" 
-                                      src={avatarDefault}
-                                      alt="Avatar" 
-                                  /> 
-                                  <div className="flex flex-col justify-start"> 
-                                      <p className="text-base">fullname</p> 
-                                      <p className="text-gray-500">@username</p> 
-                                  </div> 
-                              </div> 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await getUsersAPI(searchTerm);
+        const filteredUsers = response.data.data.filter((user: User) =>
+          user.fullname.toLowerCase().startsWith(searchTerm.toLowerCase())
+        );
+        const sortedUsers = filteredUsers.sort((a: User, b: User) =>
+          a.fullname.localeCompare(b.fullname)
+        );
+        setUsers(sortedUsers);
+        setShowResults(true);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
 
-                              <button 
-                                  className="border border-white mt-3 px-4 py-1 rounded-full text-sm" 
-                              > 
-                              </button> 
-                          </div> 
-          </div> 
-      </div> 
-  ); 
-} 
+    if (searchTerm.trim() !== '') {
+      fetchUsers();
+    } else {
+      setShowResults(false);
+    }
+  }, [searchTerm]);
 
-export default Search;
+  const handleSearch = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+    setSearchTerm(event.target.value);
+  };
+
+  return (
+    <Box p={8}>
+      <Flex justifyContent="center" width={'100%'} mb={8}>
+        <Input
+          placeholder="Search for users"
+          value={searchTerm}
+          onChange={handleSearch}
+          width="80%"
+          height="30px"
+          borderColor="gray.400"
+          borderWidth={2}
+          borderRadius={20}
+          py={4}
+          px={6}
+          fontSize="lg"
+        />
+      </Flex>
+
+      {showResults && users.length > 0 && (
+        <Box>
+          {users.map((user) => (
+            <Box key={user.id}>
+              <Flex borderBottom={"1px solid gray"} justifyContent={"space-between"} alignItems="center" py={4}>
+                <Avatar
+                  style={{ cursor: 'pointer' 
+                    , width: "60px", height: "60px", marginRight: "20px"
+                  }}
+                  borderRadius={"100%"}
+                 src={"http://localhost:5000/uploads/" + user.profile?.avatar } mr={4} />
+                <Box flex="1">
+                  <Text fontWeight="bold" fontSize="xl">
+                    {user.fullname}
+                  </Text>
+                  <Text style={{marginTop: "-5px"}} color="gray.500">@{user.username}</Text>
+                </Box>
+                <FollowButton userId={parseInt(user.id)}/>
+              </Flex>
+              <Divider />
+            </Box>
+          ))}
+        </Box>
+      )}
+    </Box>
+  );
+};
+
+export default SearchPage;

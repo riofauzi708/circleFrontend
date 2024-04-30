@@ -9,11 +9,12 @@ import LikeButton from "../LikeButton";
 interface IThreadCardProps {
   thread: IThread,
   index: number,
-  isNot: string
+  isNot: string,
+  callback?: () => void
 }
 
-const ThreadCard: React.FC<IThreadCardProps> = ({ thread, index, isNot }) => {
-
+const ThreadCard: React.FC<IThreadCardProps> = ({ thread, index, isNot, callback }) => {
+ 
   const { postTime } = usePosted();
 
   return (
@@ -23,7 +24,6 @@ const ThreadCard: React.FC<IThreadCardProps> = ({ thread, index, isNot }) => {
       borderBottom="1px solid gray"
       padding="10px"
       marginTop="10px"
-      style={{cursor: "pointer"}}
     >
       {thread.author?.profile?.avatar ? (
         <Avatar
@@ -60,14 +60,19 @@ const ThreadCard: React.FC<IThreadCardProps> = ({ thread, index, isNot }) => {
           {thread.content}
         </Text>
         {thread.image && thread.image.map((imageThread) => (
+          <Link to= {`/detail-image/${thread.id}`} state={{ 
+            image: imageThread.image }} style={{ textDecoration: "none" }}>
           <Image
+            key={imageThread.image}
             src={"http://localhost:5000/uploads/" + imageThread.image}
             alt="image"
             width="50%"
+            height={"250px"}
             maxHeight={"250px"}
             objectFit="cover"
             style={{ marginTop: "10px" }}
           />
+           </Link>
         ))}
         {isNot === '' ? "" : <Flex gap={10}>
             <Button 
@@ -84,7 +89,7 @@ const ThreadCard: React.FC<IThreadCardProps> = ({ thread, index, isNot }) => {
             , backgroundColor: "transparent"
             }}
             >
-                <LikeButton threadId={thread.id as number} />
+                <LikeButton threadId={thread.id as number} callback={callback} count={thread._count?.like as number} />
             </Button>
             <Link to={isNot}
             style={{ 
@@ -100,7 +105,7 @@ const ThreadCard: React.FC<IThreadCardProps> = ({ thread, index, isNot }) => {
             >
               <BiComment
               style={{ width: "20px", height: "20px" }}
-              />96 Replies
+              />{thread._count?.replies} Replies
               </Link>
         </Flex>}
         

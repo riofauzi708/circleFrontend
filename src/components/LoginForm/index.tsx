@@ -9,6 +9,7 @@ interface ILoginFormProps {
   callback: () => void;
 }
 
+
 const LoginForm: React.FC<ILoginFormProps> = ({callback}) => {
   const dispatch = useDispatch();
   const [formInput, setFormInput] = useState<{ email: string; username: string; password: string }>({
@@ -46,6 +47,7 @@ const LoginForm: React.FC<ILoginFormProps> = ({callback}) => {
       
     } catch (error) {
       console.log(error);
+      alert('Username or password is incorrect');
       
     }
   }
@@ -58,14 +60,15 @@ const LoginForm: React.FC<ILoginFormProps> = ({callback}) => {
   }
   
   const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-
       const res = await getRegisterAPI(inputRegister);
       console.log(res);
-    } catch (error) {
+      setShowRegisterModal(false);
+      alert ("Register Success");
+    } catch (error: any) {
       console.log(error);
-      
+      alert('Username or email already exists');
     }
   }
 
@@ -161,9 +164,10 @@ const LoginForm: React.FC<ILoginFormProps> = ({callback}) => {
           >
             <CloseButton
               position="absolute"
-              top={4}
+              top={1}
               right={4}
               onClick={handleCloseRegisterModal}
+              h={25}
             />
             <Text color={"#04a51e"} fontWeight="bold" mt={2} fontSize={"30px"}
             style={{ marginBottom: "-15px" }}

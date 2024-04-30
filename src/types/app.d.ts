@@ -1,11 +1,22 @@
-export interface IThread {
-    id?: number;
-    content?: string;
-    image?: IThread[];
-    userId: number;
-    threadId?: number;
-    author?: IUser;
- }
+interface IThread {
+    id: number;
+    content: string;
+    image?: { image: string }[];
+    userId?: number;
+    author?: {
+        id: number;
+        fullname: string;
+        username: string;
+        profile?: {
+            id?: number;
+            avatar?: string | null;
+        };
+    };
+    _count?: {
+    like?: number;
+        replies?: number;
+    }
+}
  
  export interface IThreadImage {
     image?: string;
@@ -13,16 +24,37 @@ export interface IThread {
  
  export interface IUser {
     id: number;
+    avatar? : string;
     username: string;
     fullname: string;
     email: string;
-    profile: IProfile;
+    profile?: IProfile;
+    _count?: {
+        follower?: number;
+        following?: number;
+    }
+    followers?: IFollow[];
+    following?: IFollow[];
  }
  
  export interface IProfile {
+    id?: number;
     bio?: string;
     avatar?: string;
     cover?: string;
     user: IUser;
  }
 
+ export interface IFollow {
+    followerId: number[];
+    followingId: number[];
+ }
+
+ export interface IFollowerUser {
+    id: number
+    username: string
+    fullname: string
+    profile: {
+        avatar: string
+    }
+ }

@@ -65,7 +65,7 @@ const EditProfileModal = () => {
       <Modal isOpen={isOpen} onClose={onClose} size="md">
         <ModalOverlay />
         <ModalContent w="90%" mx="auto" mt="20px" pb="40px">
-          <ModalCloseButton w={"80%"} mx={"auto"} />
+          <ModalCloseButton w={"80%"} h={"4%"} mx={"auto"} />
           <ModalHeader bg="#1d1d1d" color="white" mx={"auto"} w={"80%"} fontSize="25px">
             EDIT PROFILE
           </ModalHeader>
@@ -97,14 +97,14 @@ const EditProfileModal = () => {
                 <Text fontSize="14px" color="grey" fontWeight="bold" ml={3}>
                   Name
                 </Text>
-                <Text fontWeight="bold" fontSize="14px">
+                <Text fontWeight="bold" fontSize="14px" ml={12}>
                   {profile?.user.fullname}
                 </Text>
 
                 {/* Username */}
                 <Box border="2px solid grey" color="white" borderRadius="xl" mt={3}>
                   <Text fontSize="14px">Username</Text>
-                  <Text fontSize="14px">{profile?.user.username}</Text>
+                  <Text fontSize="14px" ml={10}>{profile?.user.username}</Text>
                 </Box>
 
                 {/* Bio */}
@@ -117,7 +117,7 @@ const EditProfileModal = () => {
 
                 {/* Save Button */}
                 <Flex justifyContent="flex-end" mt={3}>
-                  <Button borderRadius="full" bg="rgba(4, 165, 30, 1)" color="white" fontSize="12px" w="55px" h="30px" ml="15px" onClick={handlePost} _hover={{ bg: "blue.500" }}>
+                  <Button borderRadius="full" bg="rgba(4, 165, 30, 1)" color="white" fontSize="12px" w="70px" h="35px" ml="15px" onClick={handlePost} _hover={{ bg: "blue.500" }}>
                     Save
                   </Button>
                 </Flex>

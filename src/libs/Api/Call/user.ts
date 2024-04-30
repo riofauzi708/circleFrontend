@@ -28,3 +28,29 @@ export const getUsersAPI = async ( token: string ) => {
         },
     });
 }
+
+export const getFollowingAPI = async () => {
+      const response = await API.get(`followings`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      return response.data.data;
+  };
+
+  export const getFollowerAPI = async () => {
+    const response = await API.get(`followers`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return response.data.data;
+  }
+
+export const suggestUserAPI = async ( token: string ) => {
+    return await API.get(`suggest`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+}

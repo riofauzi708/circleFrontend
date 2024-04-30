@@ -1,6 +1,4 @@
-// Sidebar.tsx
-
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
 import { useAppSelector } from "../../store";
 import { useState } from "react";
@@ -21,39 +19,49 @@ import {
     Button
 } from "@chakra-ui/react";
 
-
-
-function Sidebar(props:any) {
-  const {show} = props
+function Sidebar(props: any) {
+  const { show } = props;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const MENU = [
     {
       title: "Home",
-      icon: <FaHome style={{ 
-          color: "white", width: "30px", height: "30px" }} />,
+      icon: (
+        <FaHome
+          style={{ color: "white", width: "30px", height: "30px" }}
+        />
+      ),
       link: "/",
-      handleShow: show
-
+      handleShow: show,
     },
     {
       title: "Search",
-      icon: <FaSearch style={{ 
-          color: "white", width: "30px", height: "30px" }} />,
+      icon: (
+        <FaSearch
+          style={{ color: "white", width: "30px", height: "30px" }}
+        />
+      ),
       link: "/search",
     },
     {
       title: "Follows",
-      icon: <FaUserFriends style={{ 
-          color: "white", width: "30px", height: "30px" }} />,
+      icon: (
+        <FaUserFriends
+          style={{ color: "white", width: "30px", height: "30px" }}
+        />
+      ),
       link: "/follows",
     },
     {
       title: "Profile",
-      icon: <FaUser style={{ 
-          color: "white", width: "30px", height: "30px" }} />,
+      icon: (
+        <FaUser
+          style={{ color: "white", width: "30px", height: "30px" }}
+        />
+      ),
       link: "/profile",
-      handleShow: show
+      handleShow: show,
     },
   ];
 
@@ -65,8 +73,15 @@ function Sidebar(props:any) {
     setShowLoginForm(false);
   };
 
-  return !auth.user ? 
-        (
+  const handleLogout = () => {
+    dispatch(Logout());
+    navigate("/");
+    window.location.reload(); // Refresh halaman setelah logout
+  };
+
+  return (
+    <>
+      {!auth.user ? (
         <>
           <Text
             style={{
@@ -92,19 +107,22 @@ function Sidebar(props:any) {
             <ModalOverlay />
             <ModalContent>
               <ModalBody>
-              <ModalCloseButton style={{ 
-                color: "white", 
-                right: "33%", 
-                top: "45px", 
-                position: "absolute", 
-                width: "30px", 
-                height: "30px",
-                }} 
+                <ModalCloseButton
+                  style={{
+                    color: "white",
+                    right: "33%",
+                    top: "45px",
+                    position: "absolute",
+                    width: "30px",
+                    height: "30px",
+                  }}
                 />
                 <LoginForm callback={handleCloseModal} />
               </ModalBody>
               <ModalFooter>
-                <Text onClick={handleCloseModal} cursor="pointer">Close</Text>
+                <Text onClick={handleCloseModal} cursor="pointer">
+                  Close
+                </Text>
               </ModalFooter>
             </ModalContent>
           </Modal>
@@ -112,15 +130,14 @@ function Sidebar(props:any) {
       ) : (
         <Box style={{ marginTop: "-35px" }}>
           {MENU.map((menu) => (
-            <Box key={menu.title}
-            >
+            <Box key={menu.title}>
               <Link
                 style={{
-                    display: "flex", 
-                    textDecoration: "none",  
-                    paddingLeft: "20px",
-                    alignItems: "center",
-                    color: "white",
+                  display: "flex",
+                  textDecoration: "none",
+                  paddingLeft: "20px",
+                  alignItems: "center",
+                  color: "white",
                 }}
                 to={menu.link}
                 onClick={menu.handleShow}
@@ -130,7 +147,7 @@ function Sidebar(props:any) {
                   ml="15px"
                   w={"50%"}
                   style={{
-                    fontSize: "20px", 
+                    fontSize: "20px",
                     color: "white",
                   }}
                 >
@@ -139,48 +156,51 @@ function Sidebar(props:any) {
               </Link>
             </Box>
           ))}
-            <Button
+          <Button
+            style={{
+              width: "200px",
+              height: "40px",
+              backgroundColor: "#04a51e",
+              borderRadius: "20px",
+              color: "white",
+              marginTop: "20px",
+              marginLeft: "15px",
+              border: "none",
+            }}
+          >
+            Create Post
+          </Button>
+          <Button
+            style={{
+              backgroundColor: "transparent",
+              marginTop: "25px",
+              borderRadius: "20px",
+              border: "none",
+              height: "40px",
+              cursor: "pointer",
+              color: "white",
+              width: "200px",
+              fontSize: "15px",
+              position: "fixed",
+              bottom: "20px",
+              left: "8px",
+            }}
+            onClick={handleLogout} // Logout dan refresh halaman
+          >
+            <BiLogOut
               style={{
-                width: "200px",
-            height: "40px",
-            backgroundColor: "#04a51e", 
-            borderRadius: "20px", 
-            color: "white", 
-            marginTop: "20px",
-            marginLeft: "15px",
-              }}
-            >
-              Create Post
-            </Button>
-            <Button
-              style={{
-                marginTop: "25px",
-                marginLeft: "15px",
-                borderRadius: "20px",
-                border: "none",
-                height: "40px",
-                cursor: "pointer",
                 color: "white",
-                width: "200px",
-                fontSize: "15px",
-                position: "fixed",
-                bottom: "20px",
-                left: "8px",
+                width: "30px",
+                height: "30px",
+                marginRight: "10px",
               }}
-              onClick={() => dispatch(Logout())}
-            >
-              <BiLogOut
-                style={{
-                    color: "white", 
-                    width: "30px", 
-                    height: "30px",
-                    marginRight: "10px", 
-                }}
-              />
-              Logout
-            </Button>
-          </Box>
-      );
+            />
+            Logout
+          </Button>
+        </Box>
+      )}
+    </>
+  );
 }
 
-export default Sidebar
+export default Sidebar;
