@@ -1,65 +1,76 @@
-import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { getRepliesAPI, getThreadByIdAPI } from "../../libs/Api/Call/thread"
-import { IThread } from "../../types/app"
-import { Box, Image, Text } from "@chakra-ui/react"
-import ThreadCard from "../../components/ThreadCard"
-import ThreadForm from "../Home/Components/ThreadForm"
-
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getRepliesAPI, getThreadByIdAPI } from "../../libs/Api/Call/thread";
+import { IThread } from "../../types/app";
+import { Box, Image, Text } from "@chakra-ui/react";
+import ThreadCard from "../../components/ThreadCard";
+import ThreadForm from "../Home/Components/ThreadForm";
 
 function DetailThread() {
-  const { threadId } = useParams()
+  const { threadId } = useParams();
 
   const [threadsDetail, setThreadsDetail] = useState<IThread>({
     userId: 0,
     content: "",
     image: [],
-    id: 0
-  })
+    id: 0,
+  });
 
-
-  const [replies, setReplies] = useState<IThread[]>([])
+  const [replies, setReplies] = useState<IThread[]>([]);
 
   const fetchThreadDetail = async () => {
     try {
-       const res = await getThreadByIdAPI(Number(threadId));
-       const resReplies = await getRepliesAPI(Number(threadId));
+      const res = await getThreadByIdAPI(Number(threadId));
+      const resReplies = await getRepliesAPI(Number(threadId));
 
-       setThreadsDetail(res.data.data);
-       setReplies(resReplies.data.data);
+      setThreadsDetail(res.data.data);
+      setReplies(resReplies.data.data);
     } catch (error) {
-       console.log(error);
+      console.log(error);
     }
- };
+  };
+
+  console.log(replies);
+  console.log(threadId);
+  console.log(threadsDetail);
 
   useEffect(() => {
-    fetchThreadDetail()
-  }, [threadId])
+    fetchThreadDetail();
+  }, [threadId]);
 
   return (
     <>
       <Box>
         <Box>
-        <Text>{threadsDetail.author?.fullname}</Text>
-        <Text>{threadsDetail.content}</Text>
-        {threadsDetail.image?.map((image) => (
-          <Image src={"http://localhost:5000/uploads/" + image.image} 
-          width="300px" alt="image" />
-        ))}
+          <Text>{threadsDetail.author?.fullname}</Text>
+          <Text>{threadsDetail.content}</Text>
+          {threadsDetail.image?.map((image, index) => (
+            <Link to={`/detail-image/${threadId}`}>
+              <Image
+                key={index}
+                src={"http://localhost:5000/uploads/" + image.image}
+                width="300px"
+                alt="image"
+              />
+            </Link>
+          ))}
         </Box>
 
         <Box>
-          <ThreadForm threadId={Number(threadId)} callback={fetchThreadDetail} />
+          <ThreadForm
+            threadId={Number(threadId)}
+            callback={fetchThreadDetail}
+          />
         </Box>
-        
+
         <Box>
           {replies.map((reply) => (
-            <ThreadCard key={reply.id} isNot={''} thread={reply} index={0} />
+            <ThreadCard key={reply.id} isNot={""} thread={reply} index={0} />
           ))}
         </Box>
       </Box>
     </>
-  )
+  );
 }
 
-export default DetailThread
+export default DetailThread;
