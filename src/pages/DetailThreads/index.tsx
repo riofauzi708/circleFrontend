@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getRepliesAPI, getThreadByIdAPI } from "../../libs/Api/Call/thread";
 import { IThread } from "../../types/app";
 import { Box, Image, Text } from "@chakra-ui/react";
@@ -30,10 +30,6 @@ function DetailThread() {
     }
   };
 
-  console.log(replies);
-  console.log(threadId);
-  console.log(threadsDetail);
-
   useEffect(() => {
     fetchThreadDetail();
   }, [threadId]);
@@ -43,17 +39,15 @@ function DetailThread() {
       <Box>
         <Box>
           <Text>{threadsDetail.author?.fullname}</Text>
-          <Text>{threadsDetail.content}</Text>
           {threadsDetail.image?.map((image, index) => (
-            <Link to={`/detail-image/${threadId}`}>
-              <Image
-                key={index}
-                src={"http://localhost:5000/uploads/" + image.image}
-                width="300px"
-                alt="image"
-              />
-            </Link>
+            <Image
+              key={index}
+              src={"http://localhost:5000/uploads/" + image.image}
+              width="300px"
+              alt="image"
+            />
           ))}
+          <Text>{threadsDetail.content}</Text>
         </Box>
 
         <Box>

@@ -25,7 +25,6 @@ const LikeButton: React.FC<ILikeButtonProps> = ({
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      console.log(res);
 
       setLiked(res.data.data.like === null ? false : true);
     } catch (error) {
@@ -46,7 +45,6 @@ const LikeButton: React.FC<ILikeButtonProps> = ({
           },
         }
       );
-      console.log(res);
       getLike();
       callback();
     } catch (error) {

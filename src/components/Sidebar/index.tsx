@@ -2,21 +2,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
 import { useAppSelector } from "../../store";
 import { useState } from "react";
-import { 
-    FaHome, FaSearch, FaUser, FaUserFriends } from "react-icons/fa";
+import { FaHome, FaSearch, FaUser, FaUserFriends } from "react-icons/fa";
 import LoginForm from "../LoginForm";
 import { useDispatch } from "react-redux";
 import { Logout } from "../../store/slice/auth";
-import { 
-    Box, 
-    Text, 
-    Modal, 
-    ModalOverlay, 
-    ModalContent, 
-    ModalFooter, 
-    ModalBody, 
-    ModalCloseButton, 
-    Button
+import {
+  Box,
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
 } from "@chakra-ui/react";
 
 function Sidebar(props: any) {
@@ -28,9 +27,7 @@ function Sidebar(props: any) {
     {
       title: "Home",
       icon: (
-        <FaHome
-          style={{ color: "white", width: "30px", height: "30px" }}
-        />
+        <FaHome style={{ color: "white", width: "30px", height: "30px" }} />
       ),
       link: "/",
       handleShow: show,
@@ -38,9 +35,7 @@ function Sidebar(props: any) {
     {
       title: "Search",
       icon: (
-        <FaSearch
-          style={{ color: "white", width: "30px", height: "30px" }}
-        />
+        <FaSearch style={{ color: "white", width: "30px", height: "30px" }} />
       ),
       link: "/search",
     },
@@ -56,9 +51,7 @@ function Sidebar(props: any) {
     {
       title: "Profile",
       icon: (
-        <FaUser
-          style={{ color: "white", width: "30px", height: "30px" }}
-        />
+        <FaUser style={{ color: "white", width: "30px", height: "30px" }} />
       ),
       link: "/profile",
       handleShow: show,
@@ -76,7 +69,7 @@ function Sidebar(props: any) {
   const handleLogout = () => {
     dispatch(Logout());
     navigate("/");
-    window.location.reload(); // Refresh halaman setelah logout
+    window.location.reload();
   };
 
   return (
@@ -128,9 +121,9 @@ function Sidebar(props: any) {
           </Modal>
         </>
       ) : (
-        <Box style={{ marginTop: "-35px" }}>
+        <Box style={{ marginTop: "-45px" }}>
           {MENU.map((menu) => (
-            <Box key={menu.title}>
+            <Box style={{ marginTop: "-10px" }} key={menu.title}>
               <Link
                 style={{
                   display: "flex",
@@ -145,7 +138,6 @@ function Sidebar(props: any) {
                 {menu.icon}
                 <Text
                   ml="15px"
-                  w={"50%"}
                   style={{
                     fontSize: "20px",
                     color: "white",

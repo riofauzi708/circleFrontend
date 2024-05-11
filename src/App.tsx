@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import Search from "./pages/Search";
 import DetailThread from "./pages/DetailThreads";
 import DetailImage from "./components/DetailImage";
+import DetailProfile from "./components/DetailProfile";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/detail/:threadId" element={<DetailThread />} />
             <Route path="/detail-image/:threadId" element={<DetailImage />} />
+            <Route path="/profile/:userId" element={<DetailProfile />} />
           </Route>
         </Routes>
       </BrowserRouter>

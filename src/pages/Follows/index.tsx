@@ -15,11 +15,8 @@ import { IFollowerUser } from "../../types/app";
 import { getFollowerAPI, getFollowingAPI } from "../../libs/Api/Call/user";
 import FollowButton from "../../components/FollowButton";
 
-// Placeholder or default icon URL
-const placeholderAvatar = "http://example.com/placeholder.png";
-
 interface IFollowsProps {
-  follow: IFollowerUser;
+  follow?: IFollowerUser;
 }
 
 const Follows: React.FC<IFollowsProps> = () => {

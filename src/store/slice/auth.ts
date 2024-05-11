@@ -1,7 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IProfile } from '../../types/app';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IProfile } from "../../types/app";
 
 export interface IAuthState {
+  [x: string]: any;
   user: IProfile | null | undefined;
   token: string;
   isAuthenticated: boolean;
@@ -10,23 +11,26 @@ export interface IAuthState {
 
 const initialState: IAuthState = {
   user: undefined,
-  token: '',
+  token: "",
   isAuthenticated: false,
   isFollowing: false,
 };
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
-    Login: (state, action: PayloadAction<{ user: IProfile; token: string }>) => {
+    Login: (
+      state,
+      action: PayloadAction<{ user: IProfile; token: string }>
+    ) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
     },
     Logout: (state) => {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       state.user = undefined;
-      state.token = '';
+      state.token = "";
     },
     setFollowStatus: (state, action: PayloadAction<boolean>) => {
       state.isFollowing = action.payload;
